@@ -96,12 +96,14 @@ include_directories(${CMAKE_SOURCE_DIR}/fast5/include/fast5)
 set(MAIN_CPP src/main.cpp)
 set(TEST_CPP tests/TestEventDetect.cpp tests/TestEventDetect.hpp)
 set(C_SOURCE
-        src/scrappie_common.h
+        src/scrappie_common.c src/scrappie_common.h
         src/scrappie_stdlib.h
         src/scrappie_structures.h
         src/event_detection.c src/event_detection.h)
 set(CPP_SOURCE
-        src/EventDetection.cpp src/EventDetection.hpp)
+        src/EventDetection.cpp src/EventDetection.hpp
+        src/EventDetectMain.cpp src/EventDetectMain.hpp
+        src/Utils.cpp src/Utils.hpp)
 set(SOURCE ${CPP_SOURCE} ${C_SOURCE} src/EventDetectMain.cpp src/EventDetectMain.hpp)
 set(MY_LIBS ${HDF5_LIBRARIES} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES})
 ############################################################################################################
@@ -116,7 +118,7 @@ target_link_libraries(bindings PRIVATE ${MY_LIBS})
 ############################################################################################################
 
 # testing
-add_executable(test_event_detect_cpp ${TEST_CPP})
+add_executable(test_event_detect_cpp ${TEST_CPP} ${SOURCE})
 target_link_libraries(test_event_detect_cpp ${MY_LIBS} gtest_main gmock_main)
 enable_testing()
 add_test(tests test_event_detect_cpp ${CMAKE_SOURCE_DIR})

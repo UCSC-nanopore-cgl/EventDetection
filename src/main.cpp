@@ -4,8 +4,6 @@
 
 // local lib
 #include "EventDetectMain.hpp"
-// boost
-#include <boost/filesystem.hpp>
 // fast5
 #include <fast5.hpp>
 // std libs
@@ -16,7 +14,6 @@
 
 
 using namespace std;
-using namespace boost::filesystem;
 
 
 
@@ -25,7 +22,7 @@ int print_usage(int argc, char **argv);
 static std::map< std::string, std::function<int(int, char**)> > programs = {
     {"help", print_usage},
     {"--help", print_usage},
-    {"detect", detect_main}
+    {"event_detect", detect_main}
 };
 
 int print_usage(int, char **)
@@ -56,19 +53,3 @@ int main(int argc, char** argv) {
       ret = print_usage( argc - 1, argv + 1);
   }
 }
-
-
-// get channel parameters and scale raw ADC counts to get pA raw current
-//fast5_raw_scaling channel_params = fast5_get_channel_params(hdf5_file);
-//raw_table rt = fast5_get_raw_samples(hdf5_file, channel_params);
-//
-//// trim using scrappie's internal method
-//// parameters taken directly from scrappie defaults
-//int trim_start = 200;
-//int trim_end = 10;
-//int varseg_chunk = 100;
-//float varseg_thresh = 0.0;
-//trim_and_segment_raw(rt, trim_start, trim_end, varseg_chunk, varseg_thresh);
-//
-//// get events
-//event_table et = detect_events(rt, *ed_params);

@@ -628,6 +628,11 @@ struct Basecall_Group_Description
     {}
 }; // struct Basecall_Group_Description
 
+struct Group_Read_ID {
+  std::string gr;
+  std::string rn;
+};
+
 class File
     : public hdf5_tools::File
 {
@@ -638,7 +643,7 @@ public:
     // Constructors
     //
     File() = default;
-    File(std::string const & file_name, bool rw = false) { open(file_name, rw); }
+    File(std::string const & file_name, bool rw = false, std::string const &type = std::string()) { open(file_name, rw, type); }
 
     //
     // Base methods
@@ -651,14 +656,23 @@ public:
     using Base::get_object_count;
     using Base::is_valid_file;
 
+//    RNA
+    bool is_rna;
     //
     // Base method wrappers
     //
     void
-    open(std::string const & file_name, bool rw = false)
+    open(std::string const & file_name, bool rw = false, std::string const &type = std::string())
     {
         Base::open(file_name, rw);
         reload();
+        if (type=="rna"){
+          is_rna = true;
+        } else if (type == "dna"){
+          is_rna = false;
+        } else {
+          is_rna = is_read_rna();
+        }
     }
 
     //
@@ -921,9 +935,9 @@ public:
     void
     add_eventdetection_events_params(
         std::string const & gr, std::string const & rn,
-        EventDetection_Events_Params const & ede_params) const
-    {
-        auto p = eventdetection_events_params_path(gr, rn);
+        EventDetection_Events_Params const & ede_params) {
+      Group_Read_ID group_info = new_group_info(gr, rn);
+      auto p = eventdetection_events_params_path(group_info.gr, group_info.rn);
         ede_params.write(*this, p);
     }
     std::vector< EventDetection_Event >
@@ -976,7 +990,8 @@ public:
         std::string const & gr, std::string const & rn,
         std::vector< EventDetection_Event > const & ede)
     {
-        Base::write_dataset(eventdetection_events_path(gr, rn), ede, EventDetection_Event::compound_map());
+      Group_Read_ID group_info = new_group_info(gr, rn);
+        Base::write_dataset(eventdetection_events_path(group_info.gr, group_info.rn), ede, EventDetection_Event::compound_map());
         reload();
     }
 
@@ -1655,6 +1670,52 @@ public:
         return res;
     }
 
+/**
+ * check if read is RNA
+ * @return bool if "experiement_type" is rna
+ */
+    bool is_read_rna(){
+      Context_Tags_Params params = get_context_tags_params();
+      return params["experiment_type"] == "rna";
+    }
+
+
+/**
+* if group number or read id is passed in then return values, if not find new group number and find read number
+* @return new or original gr, new or original rn (Group_Read_ID)
+*/
+  Group_Read_ID
+    new_group_info(std::string const &gr = std::string(), std::string const &rn = std::string())
+    {
+      std::string tmp_gr = gr;
+      std::string tmp_rn = rn;
+
+      if (tmp_gr.empty()){
+        std::vector< std::string > groups = get_eventdetection_group_list();
+        uint64_t n_groups = groups.size();
+        if (n_groups == 0) {
+          tmp_gr = "000";
+        } else if (n_groups < 10){
+          tmp_gr = "00" + std::to_string(n_groups);
+        } else if (n_groups < 99){
+          tmp_gr = "0" + std::to_string(n_groups);
+        } else{
+          tmp_gr = std::to_string(n_groups);
+        }
+      }
+      if (tmp_rn.empty()){
+        std::vector< std::string > read_names = get_eventdetection_read_name_list();
+        Raw_Samples_Params raw_samples = get_raw_samples_params();
+        if (read_names.empty()){
+          tmp_rn = "Read_" + std::to_string(raw_samples.read_number);
+        } else{
+          tmp_rn = read_names[0];
+        }
+      }
+
+      Group_Read_ID return_data = {tmp_gr, tmp_rn};
+      return return_data;
+    }
     //
     // Functions that fill in empty arguments with default values
     //
@@ -1764,12 +1825,11 @@ public:
         return ede_ds;
     }
     void
-    add_eventdetection_events_dataset(
-        std::string const & gr, std::string const & rn,
-        EventDetection_Events_Dataset const & ede_ds)
+    add_eventdetection_events_dataset(EventDetection_Events_Dataset const & ede_ds,
+        std::string const &gr = std::string(), std::string const &rn = std::string())
     {
-        add_eventdetection_events(gr, rn, ede_ds.first);
-        add_eventdetection_events_params(gr, rn, ede_ds.second);
+      add_eventdetection_events(gr, rn, ede_ds.first);
+      add_eventdetection_events_params(gr, rn, ede_ds.second);
     }
     //
     Basecall_Fastq_Pack

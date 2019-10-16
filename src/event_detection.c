@@ -221,13 +221,12 @@ event_t create_event(size_t start, size_t end, double const *sums,
     RETURN_NULL_IF(NULL == sums, event);
     RETURN_NULL_IF(NULL == sumsqs, event);
 
-    event.start = (uint64_t)start;
-    event.length = (float)(end - start);
-    event.mean = (float)(sums[end] - sums[start]) / event.length;
-    const float deltasqr = (sumsqs[end] - sumsqs[start]);
-    const float var = deltasqr / event.length - event.mean * event.mean;
-    event.stdv = sqrtf(fmaxf(var, 0.0f));
-
+    event.start = (int64_t)start;
+    event.length = (int64_t)(end - start);
+    event.mean = (double)(sums[end] - sums[start]) / event.length;
+    const double deltasqr = (sumsqs[end] - sumsqs[start]);
+    const double var = deltasqr / event.length - event.mean * event.mean;
+    event.stdv = sqrt(fmax(var, 0.0f));
     return event;
 }
 
