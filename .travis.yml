@@ -47,14 +47,16 @@ install:
 #  - ./bootstrap.sh >/dev/null #--prefix=/usr/
   - sudo ./b2
   - sudo ./b2 install
-#  Install HDF5
+  - export CFLAGS="$CFLAGS -fPIC"
+  - export CXXFLAGS="$CXXFLAGS -fPIC"
+  #  Install HDF5
   - cd $HOME/build/UCSC-nanopore-cgl/
   - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.4/src/hdf5-1.10.4.tar.gz
   - tar -xzf hdf5-1.10.4.tar.gz || exit 255
   - cd hdf5-1.10.4 && ./configure --prefix /usr/local --enable-threadsafe --disable-hl && make && sudo make install
 #  - echo "LD_LIBRARY_PATH=/home/travis/build/adbailey4/hdf5-1.10.4/hdf5/lib:$LD_LIBRARY_PATH" >> ~/.bashrc
 #  - source ~/.bashrc
-  - cd /home/travis/build/UCSC-nanopore-cgl/EventDetection
+  - cd /home/travis/build/UCSC-nanopore-cgl/nanopore-toolkit
   - python setup.py install
 
 script:
