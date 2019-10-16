@@ -8,7 +8,6 @@
 #include <fast5.hpp>
 // std libs
 #include <map>
-#include <cassert>
 #include <iostream>
 #include <string>
 
@@ -38,7 +37,7 @@ int print_usage(int, char **)
 
 
 int main(int argc, char** argv) {
-  H5Eset_auto(0, NULL, NULL);
+  H5Eset_auto(0, nullptr, nullptr);
   int ret = 0;
   if(argc <= 1) {
     printf("error: no command provided\n");
@@ -52,4 +51,5 @@ int main(int argc, char** argv) {
     else
       ret = print_usage( argc - 1, argv + 1);
   }
+  return ret;
 }

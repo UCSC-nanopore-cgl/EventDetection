@@ -13,7 +13,6 @@
 #include <string>
 #include <getopt.h>
 #include <iostream>
-#include <sstream>
 
 using namespace std;
 using namespace boost::filesystem;
@@ -29,7 +28,7 @@ static const char *EVENT_DETECT_VERSION_MESSAGE =
     SUBPROGRAM " Version " EVENT_DETECT_VERSION "\n";
 
 static const char *EVENT_DETECT_USAGE_MESSAGE =
-    "Usage: " THIS_NAME " " SUBPROGRAM " [OPTIONS] --fast5 FAST5_PATH --embed\n"
+    "Usage: " THIS_NAME " " SUBPROGRAM " [OPTIONS] --fast5 FAST5_PATH --embed \n"
     "Event detection for fast5 nanopore reads.\n"
     "\n"
     "  -v, --verbose                        display verbose output\n"
@@ -52,18 +51,18 @@ static std::string output;
 static bool embed;
 static bool rna;
 static bool dna;
-static unsigned int threads = 1;
+static int threads = 1;
 }
 
-static const char* shortopts = "t:o:i:vdreh";
+static const char* shortopts = ":f:o:t:erdvh:";
 
 enum { OPT_HELP = 1, OPT_VERSION };
 
 static const struct option longopts[] = {
     { "fast5",            required_argument, nullptr, 'f' },
-    { "embed",            no_argument,       nullptr, 'e' },
     { "output_dir",       optional_argument, nullptr, 'o' },
     { "threads",          optional_argument, nullptr, 't' },
+    { "embed",            no_argument,       nullptr, 'e' },
     { "rna",              no_argument,       nullptr, 'r' },
     { "dna",              no_argument,       nullptr, 'd' },
     { "verbose",          no_argument,       nullptr, 'v' },
@@ -75,7 +74,7 @@ static const struct option longopts[] = {
 void parse_event_detect_main_options(int argc, char** argv)
 {
   bool die = false;
-  for (char c; (c = getopt_long(argc, argv, shortopts, longopts, nullptr)) != -1;) {
+  for (char c; (c = (char) getopt_long(argc, argv, shortopts, longopts, nullptr)) != -1;) {
     std::istringstream arg(optarg != nullptr ? optarg : "");
     switch (c) {
       case 'f': arg >> opt::fast5_dir; break;
@@ -101,7 +100,7 @@ void parse_event_detect_main_options(int argc, char** argv)
     }
   }
 
-  if (argc - optind > 0) {
+  if (argc - optind > 1) {
     std::cerr << SUBPROGRAM ": too many arguments\n";
     die = true;
   }
@@ -118,8 +117,16 @@ void parse_event_detect_main_options(int argc, char** argv)
   }
 }
 
-void multithread_event_detect(string assignment_dir, string const &output_dir, bool embed, string const &type){
-  path p(assignment_dir);
+/**
+ * Multithread event detect individual nanopore reads
+ * @param fast5_dir : path to directory of fast5s
+ * @param output_dir : optional path to output directory to write tsv files
+ * @param embed : optional argument to embed fast5 files with event detections
+ * @param type : optional argument to force "rna" or "dna" event detection parameters
+ */
+
+void multithread_event_detect(string fast5_dir, string const &output_dir, bool embed, string const &type){
+  path p(fast5_dir);
   throw_assert(output_dir.empty() || embed, "Must specify output directory or set embed to True");
   path output_path;
   if (!output_dir.empty()){
@@ -145,7 +152,13 @@ void multithread_event_detect(string assignment_dir, string const &output_dir, b
   }
 }
 
-
+/**
+ * Event detection for just a single fast5 read
+ * @param fast5_path : path to fast5 file
+ * @param output_dir : optional path to output directory to write tsv files
+ * @param embed : optional argument to embed fast5 files with event detections
+ * @param type : optional argument to force "rna" or "dna" event detection parameters
+ */
 void event_detect(string const &fast5_path, string const &output_dir, bool embed, string const &type) {
   EventDetection file_handler;
   file_handler.open(fast5_path, true, type);
@@ -155,9 +168,9 @@ void event_detect(string const &fast5_path, string const &output_dir, bool embed
   }
   if (!output_dir.empty()){
     fast5::Raw_Samples_Params params = file_handler.get_raw_samples_params();
-    string read_name =  params.read_id+".tsv";
-    path output_file = ((path) output_dir)/ ((path) read_name);
-    file_handler.write_events_to_file(event_data.first, output_file.string());
+    path read_name =  (path) (params.read_id+".tsv");
+    path output_file = output_dir / read_name;
+    EventDetection::write_events_to_file(event_data.first, output_file.string());
   }
 }
 

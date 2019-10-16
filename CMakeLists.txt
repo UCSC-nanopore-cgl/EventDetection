@@ -12,7 +12,7 @@ set(INCLUDEDIR "/usr/include" CACHE STRING "Some user-specified option")
 set(PYTHON_ONLY TRUE CACHE STRING "Some user-specified option")
 message("CMakeInstall Prefix: ${CMAKE_INSTALL_PREFIX}")
 ############################################################################################################
-project(EventDetection)
+project(nanopore-toolkit)
 ############################################################################################################
 # GTEST INSTALL
 ############################################################################################################

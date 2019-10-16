@@ -14,7 +14,6 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <functional>
-#include <sstream>
 #include <cmath>
 #include <map>
 #include <chrono>

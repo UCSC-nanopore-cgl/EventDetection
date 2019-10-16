@@ -21,7 +21,7 @@ using namespace std;
  class EventDetection : public fast5::File {
   public:
    fast5::EventDetection_Events_Dataset generate_events();
-   void write_events_to_file(std::vector< fast5::EventDetection_Event > data, std::string output_path);
+   static void write_events_to_file(std::vector< fast5::EventDetection_Event > data, const string &output_path);
 };
 
 #endif //EVENTDETECTION_SRC_EVENTDETECTION_HPP_

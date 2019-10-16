@@ -4,10 +4,8 @@
 
 // local lib
 #include "EventDetection.hpp"
-#include "Utils.hpp"
 
 using namespace fast5;
-using namespace utils;
 
 /**
  * Create events from a fast5 file
@@ -66,9 +64,11 @@ EventDetection_Events_Dataset EventDetection::generate_events() {
 }
 
 /**
- *
+ * Write the vector of events to a tsv file
+ * @param data: vector of EventDetection_Events from the fast5.hpp data structures
+ * @param output_path: string of the path to write data
  */
-void EventDetection::write_events_to_file(std::vector< EventDetection_Event > data, std::string output_path){
+void EventDetection::write_events_to_file(vector<EventDetection_Event> data, const string &output_path){
   std::ofstream out_file;
   out_file.open(output_path);
   out_file << "start" << '\t' <<  "length" << "\t" << "mean" << '\t' << "stdv" << '\n';
