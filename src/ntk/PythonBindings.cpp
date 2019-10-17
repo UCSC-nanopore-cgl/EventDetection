@@ -58,21 +58,21 @@ PYBIND11_MODULE(bindings, module) {
            add
            event_detect)pbdoc";
 
-  module.def("event_detect", &event_detect, R"pbdoc(
-         Event detection for just a single fast5 read
-         @param fast5_path : path to fast5 file
-         @param output_dir : optional path to output directory to write tsv files
-         @param embed : optional argument to embed fast5 files with event detections
-         @param type : optional argument to force "rna" or "dna" event detection parameters
+  module.def("event_detect", &event_detect,
+      R"pbdoc(Event detection for just a single fast5 read\n"
+         "@param fast5_path : path to fast5 file\n"
+         "@param output_dir : optional path to output directory to write tsv files\n"
+         "@param embed : optional argument to embed fast5 files with event detections\n"
+         "@param type : optional argument to force "rna" or "dna" event detection parameters"
     )pbdoc", pybind11::arg("fast5_path"), pybind11::arg("output_dir") = "", pybind11::arg("embed") = false, pybind11::arg("type") = "");
 
-  module.def("multithread_event_detect", &multithread_event_detect, R"pbdoc(
-             Multithread event detect individual nanopore reads
-             @param fast5_dir : path to directory of fast5s
-             @param output_dir : optional path to output directory to write tsv files
-             @param embed : optional argument to embed fast5 files with event detections
-             @param type : optional argument to force "rna" or "dna" event detection parameters
-    )pbdoc", pybind11::arg("fast5_dir"), pybind11::arg("output_dir") = "", pybind11::arg("embed") = false, pybind11::arg("type") = "");
+  module.def("multithread_event_detect", &multithread_event_detect,
+      R"pbdoc("Multithread event detect individual nanopore reads\n"
+             "@param fast5_dir : path to directory of fast5s\n"
+             "@param output_dir : optional path to output directory to write tsv files\n"
+             "@param embed : optional argument to embed fast5 files with event detections\n"
+             "@param type : optional argument to force "rna" or "dna" event detection parameters)pbdoc",
+             pybind11::arg("fast5_dir"), pybind11::arg("output_dir") = "", pybind11::arg("embed") = false, pybind11::arg("type") = "");
 
 #ifdef VERSION_INFO
   m.attr("__version__") = VERSION_INFO;

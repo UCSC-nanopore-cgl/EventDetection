@@ -73,8 +73,9 @@ static const struct option longopts[] = {
 
 void parse_event_detect_main_options(int argc, char** argv)
 {
-  bool die = false;
+  bool die = true;
   for (char c; (c = (char) getopt_long(argc, argv, shortopts, longopts, nullptr)) != -1;) {
+    die = false;
     std::istringstream arg(optarg != nullptr ? optarg : "");
     switch (c) {
       case 'f': arg >> opt::fast5_dir; break;
@@ -109,7 +110,6 @@ void parse_event_detect_main_options(int argc, char** argv)
     std::cerr << SUBPROGRAM ": must select rna or dna but not both \n";
     die = true;
   }
-
   if (die)
   {
     std::cout << "\n" << EVENT_DETECT_USAGE_MESSAGE;
@@ -179,7 +179,7 @@ int detect_main(int argc, char** argv)
 {
   parse_event_detect_main_options(argc, argv);
 #ifndef H5_HAVE_THREADSAFE
-  if(opt::num_threads > 1) {
+  if(opt::threads > 1) {
     fprintf(stderr, "You enabled multi-threading but you do not have a threadsafe HDF5\n");
     fprintf(stderr, "Please recompile built-in libhdf5 or run with -t 1\n");
     exit(1);

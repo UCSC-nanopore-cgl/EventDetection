@@ -19,9 +19,9 @@ using namespace std;
 int print_usage(int argc, char **argv);
 
 static std::map< std::string, std::function<int(int, char**)> > programs = {
+    {"event_detect", detect_main},
     {"help", print_usage},
-    {"--help", print_usage},
-    {"event_detect", detect_main}
+    {"--help", print_usage}
 };
 
 int print_usage(int, char **)
