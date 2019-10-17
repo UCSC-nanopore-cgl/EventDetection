@@ -68,6 +68,22 @@ find_package(ZLIB)
 if (ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIRS})
 endif()
+message(Zlib: ${ZLIB_LIBRARIES})
+############################################################################################################
+# DL LIBRARY
+############################################################################################################
+find_library(LIBDL_LIBRARY NAMES dl)
+message(LibDL: ${LIBDL_LIBRARY})
+############################################################################################################
+# M LIBRARY
+############################################################################################################
+find_library(LIBM_LIBRARY NAMES m)
+message(LibM: ${LIBM_LIBRARY})
+############################################################################################################
+# pthread LIBRARY
+############################################################################################################
+find_library(LIBPTHREAD_LIBRARY NAMES pthread)
+message(LibPthread: ${LIBPTHREAD_LIBRARY})
 ############################################################################################################
 # HDF LIBRARY
 ############################################################################################################
@@ -105,7 +121,7 @@ set(CPP_SOURCE
         src/EventDetectMain.cpp src/EventDetectMain.hpp
         src/Utils.cpp src/Utils.hpp)
 set(SOURCE ${CPP_SOURCE} ${C_SOURCE} src/EventDetectMain.cpp src/EventDetectMain.hpp)
-set(MY_LIBS ${HDF5_LIBRARIES} ${ZLIB_LIBRARIES} ${Boost_LIBRARIES})
+set(MY_LIBS ${ZLIB_LIBRARIES} ${LIBDL_LIBRARY} ${LIBM_LIBRARY} ${LIBPTHREAD_LIBRARY} ${Boost_LIBRARIES}  ${HDF5_LIBRARIES})
 ############################################################################################################
 # main
 add_executable(nanopore-cli ${MAIN_CPP} ${SOURCE})
