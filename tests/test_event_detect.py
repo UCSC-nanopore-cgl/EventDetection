@@ -15,8 +15,8 @@ import os
 import tempfile
 import shutil
 
-from event_detect.bindings import event_detect, multithread_event_detect, EventDetection
-from event_detect.event_detect import test
+from ntk.bindings import event_detect, multithread_event_detect, EventDetection
+from ntk.event_detect import test
 
 
 class CppTests(unittest.TestCase):
@@ -36,7 +36,7 @@ class CppTests(unittest.TestCase):
         print()
         self.assertTrue(True)
 
-    def test_atest(self):
+    def test_test(self):
         self.assertEqual(1, test(1))
 
     def test_event_detect(self):

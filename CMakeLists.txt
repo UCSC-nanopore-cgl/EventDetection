@@ -128,7 +128,7 @@ add_executable(nanopore-cli ${MAIN_CPP} ${SOURCE})
 target_link_libraries(nanopore-cli ${MY_LIBS})
 # pybind
 add_subdirectory(submodules/pybind11)
-pybind11_add_module(bindings src/event_detect/PythonBindings.cpp ${SOURCE})
+pybind11_add_module(bindings src/ntk/PythonBindings.cpp ${SOURCE})
 target_link_libraries(bindings PRIVATE ${MY_LIBS})
 
 ############################################################################################################
