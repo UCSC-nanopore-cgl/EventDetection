@@ -48,12 +48,12 @@ EventDetection_Events_Dataset EventDetection::generate_events() {
   EventDetection_Events_Params event_params;
   event_params.read_id = raw_samples_params.read_id;
   event_params.read_number = raw_samples_params.read_number;
-  event_params.scaling_used = -1;
+  event_params.scaling_used = 0;
   event_params.start_mux = raw_samples_params.start_mux;
   event_params.start_time = raw_samples_params.start_time;
   event_params.duration = raw_samples_params.duration;
-  event_params.median_before = -1;
-  event_params.abasic_found = -1;
+  event_params.median_before = 0;
+  event_params.abasic_found = 0;
   EventDetection_Events_Dataset ede_ds;
   ede_ds.first = all_events;
   ede_ds.second = event_params;

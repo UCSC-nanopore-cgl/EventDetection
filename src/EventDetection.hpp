@@ -20,6 +20,9 @@ using namespace std;
 
  class EventDetection : public fast5::File {
   public:
+   EventDetection() : fast5::File() {}
+   explicit EventDetection(std::string const & file_name, bool rw = false, std::string const &type = std::string()) :
+                            fast5::File(file_name, rw, type) {}
    fast5::EventDetection_Events_Dataset generate_events();
    static void write_events_to_file(std::vector< fast5::EventDetection_Event > data, const string &output_path);
 };

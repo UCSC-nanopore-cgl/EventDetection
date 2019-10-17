@@ -63,10 +63,12 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - pwd
   - python --version
-  - gcc --version
   - cmake --version
+  - gcc --version
   - g++ --version
-#  install cmake
+  - cc --version
+  - c++ --version
+  #  install cmake
 #  - sudo apt remove --purge --auto-remove cmake
 #  - version=3.14
 #  - build=2

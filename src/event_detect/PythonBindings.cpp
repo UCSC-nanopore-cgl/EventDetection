@@ -19,35 +19,44 @@ int add1(int i, int j) {
 }
 
 using namespace pybind11;
-
+using namespace fast5;
 
 PYBIND11_MODULE(bindings, module) {
 
-//  class_<EventDetection>(module, "EventDetection")
-//      .def(init<const std::string &, bool, const std::string & >(),
-//           "Event detection class for handling individual Fast5 files ",
-//           pybind11::arg("file_name"),
-//           pybind11::arg("rw") = false,
-//           pybind11::arg("type") = "")
-//      .def("generate_events",
-//           &EventDetection::generate_events,
-//           R"pbdoc(
-//           Create events from a fast5 file\n"
-//           "@return event table)pbdoc")
-//      .def("write_events_to_file",
-//           &EventDetection::write_events_to_file,
-//           R"pbdoc(
-//           Write the vector of events to a tsv file
-//           @param data: vector of EventDetection_Events from the fast5.hpp data structures
-//           @param output_path: string of the path to write data)pbdoc",
-//           pybind11::arg("output_path"));
+  class_<EventDetection>(module, "EventDetection")
+      .def(init<const std::string &, bool, const std::string & >(),
+           "Event detection class for handling individual Fast5 files ",
+           pybind11::arg("file_name"),
+           pybind11::arg("rw") = false,
+           pybind11::arg("type") = "")
+      .def("generate_events",
+           &EventDetection::generate_events,
+           R"pbdoc(
+           Create events from a fast5 file\n"
+           "@return event table)pbdoc");
+
+  class_<EventDetection_Event>(module, "EventDetection_Event")
+      .def(init<>())
+      .def_readwrite("mean", &EventDetection_Event::mean)
+      .def_readwrite("stdv", &EventDetection_Event::stdv)
+      .def_readwrite("start", &EventDetection_Event::start)
+      .def_readwrite("length", &EventDetection_Event::length);
+
+  class_<fast5::EventDetection_Events_Params>(module, "EventDetection_Events_Params")
+      .def(init<>())
+      .def_readwrite("read_id", &EventDetection_Events_Params::read_id)
+      .def_readwrite("scaling_used", &EventDetection_Events_Params::scaling_used)
+      .def_readwrite("start_mux", &EventDetection_Events_Params::start_mux)
+      .def_readwrite("start_time", &EventDetection_Events_Params::start_time)
+      .def_readwrite("duration", &EventDetection_Events_Params::duration)
+      .def_readwrite("median_before", &EventDetection_Events_Params::median_before)
+      .def_readwrite("abasic_found", &EventDetection_Events_Params::abasic_found);
 
   module.doc() = R"pbdoc(
         Event Detection c++ Wrapper
         -----------------------
            add
-           event_detect
-    )pbdoc";
+           event_detect)pbdoc";
 
   module.def("event_detect", &event_detect, R"pbdoc(
          Event detection for just a single fast5 read
