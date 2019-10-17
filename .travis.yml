@@ -8,28 +8,6 @@ notifications: # set notification options
 
 language: generic
 
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-      - ubuntu-toolchain-r-test
-    packages:
-      - cmake-data
-      - gcc-6
-      - g++-6
-      - cmake
-
-script:
-  # Link gcc-6 and g++-6 to their standard commands
-  - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-  - ln -s /usr/bin/g++-6 /usr/local/bin/g++
-  # Export CC and CXX to tell cmake which compiler to use
-  - export CC=/usr/bin/gcc-6
-  - export CXX=/usr/bin/g++-6
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
-  # Run your build commands next
-
 matrix:
   include:
     - os: linux
@@ -37,6 +15,7 @@ matrix:
       addons:
         apt:
           sources:
+            - george-edison55-precise-backports
             - ubuntu-toolchain-r-test
           packages:
             - cmake-data
@@ -44,20 +23,20 @@ matrix:
             - g++-5
             - cmake
       env: COMPILER=g++-5
-# works on Precise and Trusty
-   - os: linux
-     compiler: gcc
-     addons:
+    - os: linux
+      compiler: gcc
+      addons:
        apt:
          sources:
+           - george-edison55-precise-backports
            - ubuntu-toolchain-r-test
          packages:
            - cmake-data
            - gcc-6
            - g++-6
            - cmake
-     env:
-       - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+      env: COMPILER=g++-5
+
     - os: linux
       compiler: clang
       addons:
@@ -67,6 +46,9 @@ matrix:
             - llvm-toolchain-precise-3.6
           packages:
             - clang-3.6
+            - gcc-6
+            - g++-6
+            - cmake
       env: COMPILER=clang++-3.6
 
 #matrix:
@@ -161,3 +143,13 @@ install:
 #
 #script:
 #  - python setup.py test
+#script:
+#  # Link gcc-6 and g++-6 to their standard commands
+#  - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+#  - ln -s /usr/bin/g++-6 /usr/local/bin/g++
+#  # Export CC and CXX to tell cmake which compiler to use
+#  - export CC=/usr/bin/gcc-6
+#  - export CXX=/usr/bin/g++-6
+#  # Check versions of gcc, g++ and cmake
+#  - gcc -v && g++ -v && cmake --version
+#  # Run your build commands next
