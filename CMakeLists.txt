@@ -121,7 +121,7 @@ set(CPP_SOURCE
         src/EventDetectMain.cpp src/EventDetectMain.hpp
         src/Utils.cpp src/Utils.hpp)
 set(SOURCE ${CPP_SOURCE} ${C_SOURCE} src/EventDetectMain.cpp src/EventDetectMain.hpp)
-set(MY_LIBS ${ZLIB_LIBRARIES} ${LIBDL_LIBRARY} ${LIBM_LIBRARY} ${LIBPTHREAD_LIBRARY} ${Boost_LIBRARIES}  ${HDF5_LIBRARIES})
+set(MY_LIBS ${Boost_LIBRARIES}  ${HDF5_LIBRARIES} ${ZLIB_LIBRARIES} ${LIBDL_LIBRARY} ${LIBM_LIBRARY} ${LIBPTHREAD_LIBRARY} )
 ############################################################################################################
 # main
 add_executable(nanopore-cli ${MAIN_CPP} ${SOURCE})
