@@ -10,7 +10,9 @@ notifications: # set notification options
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install build-essential gcc-7 g++-7 autotools-dev autoconf zlib1g-dev
+  - sudo add-apt-repository ppa:jonathonf/gcc-8.0
+  - sudo apt-get update
+  - sudo apt-get install build-essential autotools-dev gcc-8 autoconf zlib1g-dev
   - sudo apt-get update
 
 install:
