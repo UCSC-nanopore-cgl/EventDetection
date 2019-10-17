@@ -51,7 +51,7 @@ matrix:
         - MATRIX_EVAL="CC=clang-3.6 && CXX=clang-3.6"
 
 before_install:
-  - eval "${MATRIX_EVAL}"
+#  - eval "${MATRIX_EVAL}"
   - sudo apt-get update -qq
   - sudo apt-get install build-essential autotools-dev autoconf zlib1g-dev -y
   - sudo apt-get update
@@ -90,3 +90,4 @@ install:
 
 script:
   - python setup.py test
+
