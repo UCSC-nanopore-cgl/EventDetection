@@ -15,8 +15,8 @@ import os
 import tempfile
 import shutil
 
-from event_detect.bindings import event_detect, multithread_event_detect
-from event_detect.event_detect import test
+from ntk.bindings import event_detect, multithread_event_detect, EventDetection
+from ntk.event_detect import test
 
 
 class CppTests(unittest.TestCase):
@@ -28,7 +28,7 @@ class CppTests(unittest.TestCase):
                                     "tests/test_files/rna/DEAMERNANOPORE_20170922_FAH26525_MN16450_sequencing_run_MA_"
                                     "821_R94_NA12878_mRNA_09_22_17_67136_read_36_ch_218_strand.fast5")
 
-    def test_cpp(self):
+    def cpp_tests(self):
         print("\n\nTesting C++ code...")
         test_path = os.path.join(self.HOME, 'tests/bin', 'test_event_detect_cpp')
         print()
@@ -52,6 +52,17 @@ class CppTests(unittest.TestCase):
             shutil.copyfile(self.RNA_READ, fast5_file)
             multithread_event_detect(tempdir, embed=True)
             self.assertEqual(1, 1)
+
+    def test_eventDetection(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            fast5_file = os.path.join(tempdir, "rna.fast5")
+            shutil.copyfile(self.RNA_READ, fast5_file)
+            ed = EventDetection(self.RNA_READ)
+            event_data, event_detect_params = ed.generate_events()
+            new_start = event_data[0].start + event_data[0].length
+            for x in event_data[1:]:
+                self.assertEqual(new_start, x.start)
+                new_start = x.start + x.length
 
 
 if __name__ == '__main__':

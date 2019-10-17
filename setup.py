@@ -118,15 +118,15 @@ def main():
     """Main docstring"""
     start = timer()
     setup(
-        name="embed",
+        name="nanopore-toolkit",
         version='0.0.1',
-        description='Event detect nanopore reads',
-        url="https://github.com/UCSC-nanopore-cgl/EventDetection",
+        description='Nanopore toolkit for dealing with nanopore data',
+        url="https://github.com/UCSC-nanopore-cgl/nanopore-toolkit",
         author='Andrew Bailey',
         license='MIT',
         packages=find_packages('src'),
         package_dir={'': 'src'},
-        ext_modules=[CMakeExtension('event_detect.bindings')],
+        ext_modules=[CMakeExtension('ntk.bindings')],
         cmdclass=dict(build_ext=CMakeBuild, install=PostInstallCommand),
         # scripts=[],
         author_email='andbaile@ucsc.com',
