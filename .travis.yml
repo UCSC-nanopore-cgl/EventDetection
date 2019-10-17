@@ -76,9 +76,9 @@ install:
   - ./bootstrap.sh --show-libraries
   - ./bootstrap.sh --with-libraries=system,date_time,filesystem,iostreams,coroutine,context >/dev/null #--prefix=/usr/
   - sudo ./b2 && sudo ./b2 install
-#  - export CFLAGS="$CFLAGS -fPIC"
-#  - export CXXFLAGS="$CXXFLAGS -fPIC"
-  #  Install HDF5
+#  Install HDF5
+  - export CFLAGS="$CFLAGS -fPIC"
+  - export CXXFLAGS="$CXXFLAGS -fPIC"
   - cd $HOME/build/UCSC-nanopore-cgl/
   - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.4/src/hdf5-1.10.4.tar.gz
   - tar -xzf hdf5-1.10.4.tar.gz || exit 255

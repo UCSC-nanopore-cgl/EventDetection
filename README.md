@@ -9,6 +9,8 @@
   * `./bootstrap.sh --with-libraries=system,date_time,filesystem,iostreams,coroutine,context >/dev/null #--prefix=/usr/`
   * `sudo ./b2 && sudo ./b2 install`
 * hdf5 >= 1.10.4 (Needs to be built with --enable-threadsafe for multithreading)
+  * `export CFLAGS="$CFLAGS -fPIC"`
+  * `export CXXFLAGS="$CXXFLAGS -fPIC"`
   * `wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.4/src/hdf5-1.10.4.tar.gz`
   * `tar -xzf hdf5-1.10.4.tar.gz || exit 255`
   * `cd hdf5-1.10.4 && ./configure --prefix /usr/local --enable-threadsafe --disable-hl && make && sudo make install`
