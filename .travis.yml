@@ -10,7 +10,7 @@ notifications: # set notification options
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install build-essential gcc-5 autotools-dev autoconf zlib1g-dev
+  - sudo apt-get install build-essential gcc-7 g++-7 autotools-dev autoconf zlib1g-dev
   - sudo apt-get update
 
 install:
@@ -25,39 +25,39 @@ install:
   - pwd
   - gcc --version
 #  install cmake
-  - sudo apt remove --purge --auto-remove cmake
-  - version=3.14
-  - build=2
-  - mkdir ~/temp
-  - cd ~/temp
-  - wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
-  - tar -xzvf cmake-$version.$build.tar.gz
-  - cd cmake-$version.$build/
-  - ./bootstrap
-  - make -j4
-  - sudo make install
-  - cmake --version
-#  Install boost
-  - cd $HOME/build/UCSC-nanopore-cgl/
-  - wget -O boost_1_69_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.tar.gz/download
-  - tar xzf boost_1_69_0.tar.gz >/dev/null
-  - cd boost_1_69_0/
-  - ./bootstrap.sh --show-libraries
-  - ./bootstrap.sh --with-libraries=system,date_time,filesystem,iostreams,coroutine,context >/dev/null #--prefix=/usr/
-#  - ./bootstrap.sh >/dev/null #--prefix=/usr/
-  - sudo ./b2
-  - sudo ./b2 install
-  - export CFLAGS="$CFLAGS -fPIC"
-  - export CXXFLAGS="$CXXFLAGS -fPIC"
-  #  Install HDF5
-  - cd $HOME/build/UCSC-nanopore-cgl/
-  - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.4/src/hdf5-1.10.4.tar.gz
-  - tar -xzf hdf5-1.10.4.tar.gz || exit 255
-  - cd hdf5-1.10.4 && ./configure --prefix /usr/local --enable-threadsafe --disable-hl && make && sudo make install
-#  - echo "LD_LIBRARY_PATH=/home/travis/build/adbailey4/hdf5-1.10.4/hdf5/lib:$LD_LIBRARY_PATH" >> ~/.bashrc
-#  - source ~/.bashrc
-  - cd /home/travis/build/UCSC-nanopore-cgl/nanopore-toolkit
-  - python setup.py install
-
-script:
-  - python setup.py test
+#  - sudo apt remove --purge --auto-remove cmake
+#  - version=3.14
+#  - build=2
+#  - mkdir ~/temp
+#  - cd ~/temp
+#  - wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
+#  - tar -xzvf cmake-$version.$build.tar.gz
+#  - cd cmake-$version.$build/
+#  - ./bootstrap
+#  - make -j4
+#  - sudo make install
+#  - cmake --version
+##  Install boost
+#  - cd $HOME/build/UCSC-nanopore-cgl/
+#  - wget -O boost_1_69_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.tar.gz/download
+#  - tar xzf boost_1_69_0.tar.gz >/dev/null
+#  - cd boost_1_69_0/
+#  - ./bootstrap.sh --show-libraries
+#  - ./bootstrap.sh --with-libraries=system,date_time,filesystem,iostreams,coroutine,context >/dev/null #--prefix=/usr/
+##  - ./bootstrap.sh >/dev/null #--prefix=/usr/
+#  - sudo ./b2
+#  - sudo ./b2 install
+#  - export CFLAGS="$CFLAGS -fPIC"
+#  - export CXXFLAGS="$CXXFLAGS -fPIC"
+#  #  Install HDF5
+#  - cd $HOME/build/UCSC-nanopore-cgl/
+#  - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.4/src/hdf5-1.10.4.tar.gz
+#  - tar -xzf hdf5-1.10.4.tar.gz || exit 255
+#  - cd hdf5-1.10.4 && ./configure --prefix /usr/local --enable-threadsafe --disable-hl && make && sudo make install
+##  - echo "LD_LIBRARY_PATH=/home/travis/build/adbailey4/hdf5-1.10.4/hdf5/lib:$LD_LIBRARY_PATH" >> ~/.bashrc
+##  - source ~/.bashrc
+#  - cd /home/travis/build/UCSC-nanopore-cgl/nanopore-toolkit
+#  - python setup.py install
+#
+#script:
+#  - python setup.py test
